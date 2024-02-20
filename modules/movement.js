@@ -14,13 +14,13 @@ export class Location{
         this.movement = this.data[0]
         this.items = this.data[1]
         this.locations = this.data[2]
-        this.currentPosition = {x: 7, y: 4};
-        this.input.addEventListener("keydown", (e)=>this.move(this.currentPosition, e));
+        this.currPosition = {x: 7, y: 4};
+        this.input.addEventListener("keydown", (e)=>this.move(this.currPosition, e));
         
 
     }
 
-    move(currentPosition, e){
+    move(currPosition, e){
         if(e.key != "Enter"){
             return;
         }
@@ -28,40 +28,53 @@ export class Location{
         switch(input){
             case "n":
             case "north":
-                if(currentPosition >= 2){
+                if(this.movement[currPosition.y - 1][currPosition.x - 1].moves.includes('NORTH')){
                     console.log("aaa");
-                    currentPosition.y -= 1;
+                    currPosition.y -= 1;
+                }
+                else{
+                    
                 }
                 
             break;
             case "e":
             case "east":
-                if(currentPosition >= 2){
+                if(this.movement[currPosition.y - 1][currPosition.x - 1].moves.includes('EAST')){
                     console.log("aaa");
-                    currentPosition.x += 1;
+                    currPosition.x += 1;
+                }
+                else{
+                    console.log("beka z cb");
+                    
                 }
             break;
             case "s":
             case "south":
-                if(currentPosition >= 2){
+                if(this.movement[currPosition.y - 1][currPosition.x - 1].moves.includes('SOUTH')){
                     console.log("aaa");
-                    currentPosition.y += 1;
+                    currPosition.y += 1;
+                }
+                else{
+                    
                 }
             break;
             case "w":
             case "west":
-                if(currentPosition >= 2){
+                if(this.movement[currPosition.y - 1][currPosition.x - 1].moves.includes('WEST')){
                     console.log("aaa");
-                    currentPosition.x -= 1;
+                    currPosition.x -= 1;
+                }
+                else{
+                    
                 }
             break;
         }
 
 
-        console.log(currentPosition);
+        console.log(currPosition);
         this.inputSpan.innerHTML = "";
         this.input.value = "";
-        console.log(this.movement, this.items, this.locations);
+        console.log(this.movement[currPosition.y - 1][currPosition.x - 1])
 
 
     }

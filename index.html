@@ -5,30 +5,44 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
 
-    <link rel="stylesheet" href="./style.css">
-    <script type="module" src="./main.js"></script>
+    <link rel="stylesheet" href="./css/style.css">
+    <script type="module" src="./main.js" defer></script>
+    <script src="./modules/terminal.js" defer></script>
+    <script type="module" src="./modules/movement.js" defer></script>
 </head>
 <body>
-    <img class="intro" src="./game_elements/img2/intro-1.jpeg">
+    <div class="container">
+        <img class="intro" src="./game_elements/img2/intro-1.jpeg">
 
-    <main>
-        <div class="game-container">
-
-            <span class="headline">fff</span>
-            <div class="images">
-                <img alt="location" class="location">
-                <img src="./game_elements/img2/compass.bmp" alt="compass" class="compass">
+        <main>
+            <div class="game-container">
+                <span class="headline">fff</span>
+                <div class="images">
+                    <img alt="location" class="location">
+                    <div class="compass">
+                        <img src="./game_elements/img2/compass.bmp" alt="compass" class="compass-img">
+                        <div class="top"></div>
+                        <div class="right"></div>
+                        <div class="bottom"></div>
+                        <div class="left"></div>
+                    </div>
+                </div>
+                <span class="direction"></span>
+                <span class="sight"></span>
+                <span class="carried-item"></span>
+                <br>
+                <div class="terminal-container">
+                    <div class="simple-query">What Now?</div>
+                    <div class="terminal">
+                        <div class="terminal-wrapper">
+                            <span class="command-line-span"></span>
+                            <input class="command-line-input" autofocus oninput="updateChange(event)"></input>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <span class="direction"></span>
-            <span class="sight"></span>
-            <span class="carried-item"></span>
-            <br>
-            <div class="terminal">
-                <span class="command-des">What now?</span>
-                <input type="text" class="command-line"><span class="caret-shape">F</span>
-            </div>
-            
-        </div>
-    </main>
+        </main>
+    
+    </div>
 </body>
 </html>

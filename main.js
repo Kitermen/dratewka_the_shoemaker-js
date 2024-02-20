@@ -1,19 +1,20 @@
 //imports
 import { Location } from "./modules/movement.js";
-
 async function getData(file){
     const result = await fetch(file);
     const snapData = await result.json();
     return snapData;
 }
-const data = ["./game_elements/movement.json", "./game_elements/movement.json"];
+const data = ["./json/movement.json", "./json/items.json", "./json/locations.json"];
 Promise.all(data.map(async(src)=>{
-    return await getData(src)
+    return await getData(src);
 }))
 .then(snap=>{
     const location = new Location(snap);
 })
 
+
+//intro
 const intros = document.querySelector('.intro');
 const container = document.querySelector('.game-container');
 

@@ -1,0 +1,76 @@
+@font-face{
+    font-family: atari;
+    src: url("/game_elements/fonts/PressStart2P.ttf");
+}
+
+*{
+    font-family: atari;
+}
+
+.terminal-container{
+    display: flex;
+    flex-direction: row;
+    max-width: 600px;
+}
+
+.terminal-wrapper {
+    position: relative;
+    box-sizing: border-box;
+    
+    padding: 4px 3px;
+    display: inline-block;
+    max-width: 100%;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+
+.command-line-span {
+    white-space: pre;
+    display: inline-block;
+    line-height: inherit;
+    box-sizing: border-box;
+    position: relative;
+    opacity: 0;
+    min-width: 2px;
+    user-select: none;
+    vertical-align: top;
+}
+
+.terminal-wrapper input {
+    text-overflow: ellipsis;
+    background: none;
+    color: inherit;
+    top: 0;
+    left: 0;
+    line-height: inherit;
+    padding: inherit;
+    position: absolute;
+    box-sizing: border-box;
+    width: 100%;
+    margin: 8px 0px 0px 4px;
+  }
+
+.terminal {
+    max-width: 500px;
+    height: 26px;
+    line-height: 26px;
+    display: block;
+    box-sizing: border-box;
+    border-right: 20px solid white;
+    margin-top: -3px;
+    color: transparent;
+    caret-color: transparent;
+}
+
+.terminal:focus{
+    outline: none;
+    color: transparent;
+}
+  
+input{
+    border: none;
+    background: none;
+    outline: none;
+    color: inherit;
+}
+

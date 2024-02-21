@@ -5,7 +5,7 @@
     margin-top: 50px;
 }
 
-.compass > .top, .right, .bottom, .left{
+.compass > .NORTH, .EAST, .SOUTH, .WEST{
     position: relative;
     background-color: black;
     width: 50px;
@@ -16,26 +16,26 @@
     width: 350px;
 }
 
-.top{
+.NORTH{
     top: -195px;
     left: 140px;
-    display: none;
+    /* display: none; */
 }
 
-.right{
+.EAST{
     top: -200px;
     left: 310px;
-    display: none;
+    /* display: none; */
 }
 
-.bottom{
+.SOUTH{
     top: -120px;
     left: 140px;
-    display: none;
+    /* display: none; */
 }
 
-.left{
-    top: -300px;
+.WEST{
+    top: -250px;
     left: 0px;
-    display: none;
+    /* display: none; */
 }

@@ -4,13 +4,10 @@ export class Location{
         this.location = document.querySelector(".location");
 
         this.compass = document.querySelector(".compass");
-        // this.north = document.querySelector(".NORTH");
-        // this.east = document.querySelector(".EAST");
-        // this.south = document.querySelector(".SOUTH");
-        // this.west = document.querySelector(".WEST");
         this.directions = ["north", "east", "south", "west"];
         
         this.direction = document.querySelector(".direction");
+        console.log(this.direction.innerText.length);
         this.sight = document.querySelector(".sight");
         this.carriedItem = document.querySelector(".carried-item");
 
@@ -23,10 +20,9 @@ export class Location{
         this.items = this.data[1]
         this.locations = this.data[2]
         this.currPosition = {x: 7, y: 4};
+        this.setUp();
         this.input.addEventListener("keydown", (e)=>this.move(this.currPosition, e));
     }
-
-    
 
     move(currPosition, e){
         if(e.key != "Enter"){
@@ -38,25 +34,12 @@ export class Location{
             case "north":
                 if(this.movement[currPosition.y - 1][currPosition.x - 1].moves.includes('NORTH')){
                     console.log("aaa");
-                    currPosition.y -= 1;
-                    this.headline.innerHTML = this.movement[currPosition.y - 1][currPosition.x - 1].name;
-                    this.location.src = `/game_elements/img/${this.movement[currPosition.y - 1][currPosition.x - 1].image}`;
-                    this.directions.forEach(dir => {
-                        console.log(this.movement[currPosition.y - 1][currPosition.x - 1].moves);
-                        if(this.movement[currPosition.y - 1][currPosition.x - 1].moves.includes(`${dir.toUpperCase()}`)){
-                            document.getElementById(`${dir}`).style.display = "none";
-                            console.log("NOWAY", dir);
-                        }
-                        else{
-                            document.getElementById(`${dir}`).style.display = "block";
-                        }
-                    })                    
+                    currPosition.y -= 1;                    
                 }
                 else{
                     
-                }
-                
-            break;
+                } break;
+
             case "e":
             case "east":
                 if(this.movement[currPosition.y - 1][currPosition.x - 1].moves.includes('EAST')){
@@ -66,8 +49,8 @@ export class Location{
                 else{
                     console.log("beka z cb");
                     
-                }
-            break;
+                } break;
+
             case "s":
             case "south":
                 if(this.movement[currPosition.y - 1][currPosition.x - 1].moves.includes('SOUTH')){
@@ -76,8 +59,7 @@ export class Location{
                 }
                 else{
                     
-                }
-            break;
+                } break;
             case "w":
             case "west":
                 if(this.movement[currPosition.y - 1][currPosition.x - 1].moves.includes('WEST')){
@@ -86,33 +68,39 @@ export class Location{
                 }
                 else{
                     
-                }
-            break;
+                } break;
         }
+        this.setUp();
         this.inputSpan.innerText = "";
         this.input.value = "";
 
     }
 
     setUp(){
-        //this.headline.innerHTML = `${this.movement[this.currPosition.y - 1][this.currPosition.x - 1].name}`;
-        console.log("xd");
+        this.headline.innerHTML = this.movement[this.currPosition.y - 1][this.currPosition.x - 1].name;
+        this.location.src = `/game_elements/img/${this.movement[this.currPosition.y - 1][this.currPosition.x - 1].image}`;
+        this.location.style.backgroundColor = this.movement[this.currPosition.y - 1][this.currPosition.x - 1].color;
+        this.directions.forEach(dir => {
+            console.log(this.movement[this.currPosition.y - 1][this.currPosition.x - 1].moves);
+            if(this.movement[this.currPosition.y - 1][this.currPosition.x - 1].moves.includes(`${dir.toUpperCase()}`)){
+                document.getElementById(`${dir}`).style.display = "none";
+                this.direction.innerHTML += `${dir.toUpperCase()},&nbsp`;
+            }
+            else{
+                document.getElementById(`${dir}`).style.display = "block";
+            }
+        })
+        console.log(this.direction.innerText);
+        if(this.direction.innerText.length > 12){
+            this.direction.innerText = this.direction.innerText.slice(0, -1);
+        }
+        else{
+            this.direction.innerText += "NOTHING";
+        }
     }
     
    
     
 
 }
-
-
-
-// window.onkeydown = function(e){
-//     switch(e.key){    
-//         case "ArrowUp": {
-
-//             }
-//             break
-//         }
-//     }
-// }
 

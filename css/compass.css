@@ -1,12 +1,12 @@
 .images{
     display: flex;
-    justify-content: space-between;
-    border: 2px solid white;
+    flex-direction: row;
     margin-top: 50px;
+    gap: 100px;
 }
 
 .compass > .NORTH, .EAST, .SOUTH, .WEST{
-    position: relative;
+    position: absolute;
     background-color: black;
     width: 50px;
     height: 50px;
@@ -14,28 +14,29 @@
 
 .compass > .compass-img{
     width: 350px;
+    margin-top: 30px;
 }
 
 .NORTH{
-    top: -195px;
-    left: 140px;
+    top: 80px;
+    left: 640px;
     /* display: none; */
 }
 
 .EAST{
-    top: -200px;
-    left: 310px;
+    top: 128px;
+    left: 812px;
     /* display: none; */
 }
 
 .SOUTH{
-    top: -120px;
-    left: 140px;
+    top: 254px;
+    left: 640px;
     /* display: none; */
 }
 
 .WEST{
-    top: -250px;
-    left: 0px;
+    top: 128px;
+    left: 488px;
     /* display: none; */
 }

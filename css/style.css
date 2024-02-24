@@ -12,10 +12,11 @@
     box-sizing: border-box;
     font-family: atari;
     font-size: 22px;
-    color: white;
+    color: lightgray;
     overflow-x: hidden;
     overflow-y: hidden;
     background-color: black;
+    white-space: nowrap;
 }
 
 .intro{
@@ -34,16 +35,15 @@
 main{
     width: 100%;
     height: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    position: absolute;
+    top: 50px;
+    left: 50px;
 }
 
 .game-container{
     width: 1400px;
     height: 1000px;
     padding: 10px 20px 10px 20px;
-    border: 2px solid white;
     opacity: 0;
     display: flex;
     flex-direction: column;
@@ -54,6 +54,24 @@ main{
     z-index: 3;
 }
 
+
+.location{
+    min-width: 380px;
+    height: 240px;
+    border: 3px solid darkgray;
+}
+
+.direction{
+    margin: 20px 0px 20px 0px;
+}
+
+.sight{
+    margin-bottom: 20px;
+}
+
+.carried-item{
+    margin-bottom: 40px;
+}
 
 
 

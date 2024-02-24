@@ -1,6 +1,8 @@
 const spanElement = document.querySelector('.command-line-span');
 
 function updateChange(event) {
-    const value = event.target.value;
-    spanElement.innerText = value;
+    event.target.value = event.target.value.toUpperCase()
+    let value = event.target.value.toUpperCase();
+    console.log(value);
+    spanElement.innerText = value.toUpperCase();
 }

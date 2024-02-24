@@ -30,50 +30,47 @@ export class Location{
         }
         let input = e.target.value;
         switch(input){
-            case "n":
-            case "north":
+            case "N":
+            case "NORTH":
                 if(this.movement[currPosition.y - 1][currPosition.x - 1].moves.includes('NORTH')){
-                    console.log("aaa");
                     currPosition.y -= 1;                    
                 }
                 else{
                     
                 } break;
 
-            case "e":
-            case "east":
+            case "E":
+            case "EAST":
                 if(this.movement[currPosition.y - 1][currPosition.x - 1].moves.includes('EAST')){
-                    console.log("aaa");
                     currPosition.x += 1;
                 }
                 else{
-                    console.log("beka z cb");
                     
                 } break;
 
-            case "s":
-            case "south":
+            case "S":
+            case "SOUTH":
                 if(this.movement[currPosition.y - 1][currPosition.x - 1].moves.includes('SOUTH')){
-                    console.log("aaa");
                     currPosition.y += 1;
                 }
                 else{
                     
                 } break;
-            case "w":
-            case "west":
+            case "W":
+            case "WEST":
                 if(this.movement[currPosition.y - 1][currPosition.x - 1].moves.includes('WEST')){
-                    console.log("aaa");
                     currPosition.x -= 1;
                 }
                 else{
                     
                 } break;
         }
-        this.setUp();
+        const defaultD = this.direction.innerText.slice(0, 11);
+        console.log(defaultD);
+        this.direction.innerText = defaultD;
         this.inputSpan.innerText = "";
         this.input.value = "";
-
+        this.setUp();
     }
 
     setUp(){
@@ -90,13 +87,13 @@ export class Location{
                 document.getElementById(`${dir}`).style.display = "block";
             }
         })
-        console.log(this.direction.innerText);
         if(this.direction.innerText.length > 12){
-            this.direction.innerText = this.direction.innerText.slice(0, -1);
+            this.direction.innerText = this.direction.innerText.slice(0, -2);
         }
-        else{
-            this.direction.innerText += "NOTHING";
-        }
+    }
+
+    alert(){
+
     }
     
    

@@ -1,0 +1,16 @@
+.direction{
+    margin: 20px 0px 20px 0px;
+}
+
+.sight-container, .carried-container{
+    display: flex;
+    flex-direction: row;
+}
+
+.sight{
+    margin-bottom: 20px;
+}
+
+.carried{
+    margin-bottom: 40px;
+}

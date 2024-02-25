@@ -1,5 +1,6 @@
 @import url("/css/terminal.css");
 @import url("/css/compass.css");
+@import url("/css/player-data.css");
 
 @font-face{
     font-family: atari;
@@ -54,23 +55,10 @@ main{
     z-index: 3;
 }
 
-
 .location{
     min-width: 380px;
     height: 240px;
     border: 3px solid darkgray;
-}
-
-.direction{
-    margin: 20px 0px 20px 0px;
-}
-
-.sight{
-    margin-bottom: 20px;
-}
-
-.carried-item{
-    margin-bottom: 40px;
 }
 
 

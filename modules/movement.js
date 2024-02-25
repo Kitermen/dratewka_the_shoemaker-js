@@ -7,13 +7,14 @@ export class Location{
         this.directions = ["north", "east", "south", "west"];
         
         this.direction = document.querySelector(".direction");
-        console.log(this.direction.innerText.length);
         this.sight = document.querySelector(".sight");
-        this.carriedItem = document.querySelector(".carried-item");
+        this.carriedItem = document.querySelector(".carried");
 
+        this.query = document.querySelector(".simple-query");
+        this.terminal = document.querySelector(".terminal");
+        this.wrapper = document.querySelector(".terminal-wrapper");
         this.inputSpan = document.querySelector(".command-line-span");
         this.input = document.querySelector(".command-line-input");
-        this.wrapper = document.querySelector(".terminal-wrapper");
 
         this.data = data;
         this.movement = this.data[0]
@@ -36,7 +37,7 @@ export class Location{
                     currPosition.y -= 1;                    
                 }
                 else{
-                    
+                    this.alert("wrong-way");
                 } break;
 
             case "E":
@@ -45,7 +46,7 @@ export class Location{
                     currPosition.x += 1;
                 }
                 else{
-                    
+                    this.alert("wrong-way");
                 } break;
 
             case "S":
@@ -54,19 +55,19 @@ export class Location{
                     currPosition.y += 1;
                 }
                 else{
-                    
+                    this.alert("wrong-way");
                 } break;
+
             case "W":
             case "WEST":
                 if(this.movement[currPosition.y - 1][currPosition.x - 1].moves.includes('WEST')){
                     currPosition.x -= 1;
                 }
                 else{
-                    
+                    this.alert("wrong-way");
                 } break;
         }
         const defaultD = this.direction.innerText.slice(0, 11);
-        console.log(defaultD);
         this.direction.innerText = defaultD;
         this.inputSpan.innerText = "";
         this.input.value = "";
@@ -90,14 +91,32 @@ export class Location{
         if(this.direction.innerText.length > 12){
             this.direction.innerText = this.direction.innerText.slice(0, -2);
         }
+        let itemsNearby = this.movement[this.currPosition.y - 1][this.currPosition.x - 1].items;
+        if(itemsNearby.length == 0){
+            console.log("trelemorele");
+            this.sight.innerText = "nothing";
+        }
+        else{
+            itemsNearby.forEach(item=>{
+                item = item.toString()
+                console.log(this.items[16])
+            })
+        }
     }
 
-    alert(){
-
+    alert(code){
+        switch(code){
+            case "wrong-way":
+                this.terminal.style.visibility = "hidden";
+                this.query.innerText = "You can't go that way";
+                setTimeout(()=>{
+                    this.terminal.style.visibility = "visible";
+                    this.query.innerText = "What now?";
+                    this.input.focus();
+                }, 1000);
+            break;
+        }
     }
-    
-   
-    
-
 }
+
 

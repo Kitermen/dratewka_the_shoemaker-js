@@ -1,3 +1,7 @@
+document.onmousedown = (e) => {
+    e.preventDefault();
+}
+
 const spanElement = document.querySelector('.command-line-span');
 
 function updateChange(event) {

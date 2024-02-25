@@ -5,7 +5,7 @@ async function getData(file){
     const snapData = await result.json();
     return snapData;
 }
-const data = ["./json/movement.json", "./json/items.json", "./json/locations.json"];
+const data = ["./json/movement.json", "./json/items.json", "./json/locations.json", "./json/gossips.json", "./json/vocabulary.json"];
 Promise.all(data.map(async(src)=>{
     return await getData(src);
 }))

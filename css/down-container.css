@@ -1,0 +1,35 @@
+.down-container{
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 350px;
+}
+
+.hints{
+    width: fit-content;
+    height: 600px;
+    display: none;
+    color: lightgray;
+    position: absolute;
+    top: 350px;
+    left: 20px;
+    white-space: wrap;
+    line-height: 30px;
+}
+
+.direction{
+    margin: 20px 0px 0px 0px;
+}
+
+.sight-container, .carried-container{
+    display: flex;
+    flex-direction: row;
+}
+
+.sight-container{
+    margin: 20px 0px 20px 0px;
+}
+
+.carried-container{
+    margin: 0px 0px 40px 0px;
+}

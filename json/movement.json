@@ -136,7 +136,7 @@
         },
         {
             "name": "You are in a forest",
-            "image": "26 i 65.gif",
+            "image": "26.gif",
             "color": "rgb(167,245,63)",
             "moves": [
                 "EAST",
@@ -146,7 +146,7 @@
         },
         {
             "name": "You are in a deep forest",
-            "image": "27 i 67.gif",
+            "image": "27.gif",
             "color": "rgb(140,253,99)",
             "moves": [
                 "NORTH",
@@ -368,7 +368,7 @@
         },
         {
             "name": "You are on a path leading to the wood",
-            "image": "26 i 65.gif",
+            "image": "26.gif",
             "color": "rgb(167,245,63)",
             "moves": [
                 "NORTH",
@@ -390,7 +390,7 @@
         },
         {
             "name": "You are in a deep forest",
-            "image": "27 i 67.gif",
+            "image": "27.gif",
             "color": "rgb(140,253,99)",
             "moves": [
                 "WEST"

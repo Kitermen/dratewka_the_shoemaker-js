@@ -155,25 +155,23 @@ export class Location{
                         this.hints.innerHTML += line[j] == "\n" ? "<br>" : line[j];
                     }, 8 * j);
                 }
-            }, 800 * i);
+            }, 400 * i);
         }
         
-        this.c = setTimeout(()=>{
-            window.addEventListener("keypress", () => {
-                this.downContainer.style.display = "block";
-                this.hints.innerHTML = "";
+        setTimeout(()=>{
+            window.addEventListener("keypress", ()=>{
+                // window.removeAllListeners()
+                console.log(this.hints);
+                this.hints.innerText = "";
                 this.hints.style.display = "none";
+                this.downContainer.style.display = "block";
                 this.inputSpan.innerText = "";
                 this.input.value = "";
                 this.input.focus();
-                clearTimeout(this.a)
-                clearTimeout(this.b)
-                clearTimeout(this.c)
-            });
-        }, 500);
-    }
-                
+                console.log("lol");
+            }, { once: true });
+        }, 5000);
+    }         
 }
     
-
 

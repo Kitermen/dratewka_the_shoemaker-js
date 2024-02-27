@@ -40,9 +40,9 @@ export class Location{
             return;
         }
         let input = e.target.value;
+        input.split(" ").length > 2 ? this.alert("wrong-command") : console.log("git command");
         let command = input.split(" ")[0];
         let para = input.split(" ")[1];
-        console.log(command);
         switch(command){
             case "N":
             case "NORTH":
@@ -107,8 +107,6 @@ export class Location{
             default:
                 this.alert("wrong-command");
         }
-        const defaultD = this.direction.innerText.slice(0, 11);
-        this.direction.innerText = defaultD;
         this.inputSpan.innerText = "";
         this.input.value = "";
     }
@@ -138,17 +136,18 @@ export class Location{
                 this.carried.innerText = "nothing";
             }
             else{
-                this.carried.innerText = this.items[this.held[0]][0]
+                this.carried.innerText = this.items[this.held[0]][0];
             }
 
             this.terminal.style.visibility = "visible";
             this.query.innerText = "What now?";
             this.input.focus();
-        }, 1500);
+        }, 800)
     }
     
     //must be separated from setUp() for better performance...
     directionsToGo(){
+        this.direction.innerHTML = "";
         this.directions.forEach(dir => {
             console.log(this.movement[this.currPosition.y - 1][this.currPosition.x - 1].moves);
             if(this.movement[this.currPosition.y - 1][this.currPosition.x - 1].moves.includes(`${dir.toUpperCase()}`)){
@@ -159,10 +158,8 @@ export class Location{
                 document.getElementById(`${dir}`).style.display = "block";
             }
         })
-
-        if(this.direction.innerText.length > 12){
-            this.direction.innerText = this.direction.innerText.slice(0, -2);
-        }
+        console.log(this.direction.innerHTML);
+        this.direction.innerText = this.direction.innerText.slice(0, -2);
     }
 
     //wrong-way
@@ -179,12 +176,13 @@ export class Location{
                 this.query.innerText = "There isn't anything like that here";
             break;
         }
+        //TODO -> JSON of key(err code), val(Try another word or V for vocabulary)
         setTimeout(()=>{
             this.directionsToGo()
             this.terminal.style.visibility = "visible";
             this.query.innerText = "What now?";
             this.input.focus();
-        }, 1000);
+        }, 800)
     }
             
     //vocabulary or gossips
@@ -201,9 +199,9 @@ export class Location{
                 for(let j = 0; j < line.length; j += 1){
                     this.b = setTimeout(()=>{
                         this.hints.innerHTML += line[j] == "\n" ? "<br>" : line[j];
-                    }, 8 * j);
+                    }, 8 * j)
                 }
-            }, 400 * i);
+            }, 400 * i)
         }
         setTimeout(()=>{
             window.addEventListener("keypress", ()=>{
@@ -214,25 +212,29 @@ export class Location{
                 this.input.value = "";
                 this.input.focus();
             }, { once: true });
-        }, 2500);
+        }, 2500)
     }
     
     take(item){
         this.itemsHere = [];
         if(this.movement[this.currPosition.y - 1][this.currPosition.x - 1].items.length > 0){
-            this.movement[this.currPosition.y - 1][this.currPosition.x - 1].items.forEach((num)=>{
+            this.movement[this.currPosition.y - 1][this.currPosition.x - 1].items.forEach(num=>{
                 this.itemsHere.push(num);
             })
-            console.log(this.itemsHere);
+            this.itemsHere.forEach(num=>{
+                if(this.items[num][2] == item){
+                    setTimeout(()=>{
+                        this.held.push(num);
+                        this.carried.innerText = this.items[num][2];
+                        this.movement[this.currPosition.y - 1][this.currPosition.x - 1].items = this.movement[this.currPosition.y - 1][this.currPosition.x - 1].items.filter(x=> x != num);
+                        console.log(this.movement[this.currPosition.y - 1][this.currPosition.x - 1].items);
+                        this.directionsToGo()
+                    }, 800)
+                }
+            })
         }
         else{
-            this.alert("no-items")
+            this.alert("no-items");
         }
-        
-        
     }
 }
-    
-//foreach w foreach....
-//https://www.geeksforgeeks.org/how-to-get-the-first-key-name-of-a-javascript-object/
-

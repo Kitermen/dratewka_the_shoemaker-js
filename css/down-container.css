@@ -17,11 +17,11 @@
     line-height: 30px;
 }
 
-.direction{
+.direction-container{
     margin: 20px 0px 0px 0px;
 }
 
-.sight-container, .carried-container{
+.direction-container, .sight-container, .carried-container{
     display: flex;
     flex-direction: row;
 }

@@ -29,20 +29,26 @@ export class Location{
 
         this.currPosition = {x: 7, y: 4};
         this.held = [];
+        this.itemsHere = [];
         this.setUp();
         this.input.addEventListener("keydown", (e)=>this.move(this.currPosition, e));
     }
 
+    //walkie-man
     move(currPosition, e){
         if(e.key != "Enter"){
             return;
         }
         let input = e.target.value;
-        switch(input){
+        let command = input.split(" ")[0];
+        let para = input.split(" ")[1];
+        console.log(command);
+        switch(command){
             case "N":
             case "NORTH":
                 if(this.movement[currPosition.y - 1][currPosition.x - 1].moves.includes('NORTH')){
-                    currPosition.y -= 1;                    
+                    currPosition.y -= 1;
+                    this.setUp('north');                   
                 }
                 else{
                     this.alert("wrong-way");
@@ -52,6 +58,7 @@ export class Location{
             case "EAST":
                 if(this.movement[currPosition.y - 1][currPosition.x - 1].moves.includes('EAST')){
                     currPosition.x += 1;
+                    this.setUp('east');
                 }
                 else{
                     this.alert("wrong-way");
@@ -61,6 +68,7 @@ export class Location{
             case "SOUTH":
                 if(this.movement[currPosition.y - 1][currPosition.x - 1].moves.includes('SOUTH')){
                     currPosition.y += 1;
+                    this.setUp('south');
                 }
                 else{
                     this.alert("wrong-way");
@@ -70,6 +78,7 @@ export class Location{
             case "WEST":
                 if(this.movement[currPosition.y - 1][currPosition.x - 1].moves.includes('WEST')){
                     currPosition.x -= 1;
+                    this.setUp('west');
                 }
                 else{
                     this.alert("wrong-way");
@@ -84,20 +93,62 @@ export class Location{
             case "VOCABULARY":
                 this.hint("vocabulary");
             break;
+
+            case "T":
+            case "TAKE":
+                if(para == undefined || para.length < 2){
+                    this.alert("wrong-command");
+                }
+                else{
+                    this.take(para);
+                }
+            break;
+
+            default:
+                this.alert("wrong-command");
         }
         const defaultD = this.direction.innerText.slice(0, 11);
         this.direction.innerText = defaultD;
         this.inputSpan.innerText = "";
         this.input.value = "";
-        this.setUp();
     }
 
-    setUp(){
-        this.headline.innerHTML = this.movement[this.currPosition.y - 1][this.currPosition.x - 1].name;
-        
-        this.location.src = `/game_elements/img/${this.movement[this.currPosition.y - 1][this.currPosition.x - 1].image}`;
+    //updates the appearance of game menu
+    setUp(where){
+        this.terminal.style.visibility = "hidden";
+        this.query.innerText = `You are going ${where}...`;
+        setTimeout(()=>{
+            this.headline.innerHTML = this.movement[this.currPosition.y - 1][this.currPosition.x - 1].name;
+            
+            this.location.src = `/game_elements/img/${this.movement[this.currPosition.y - 1][this.currPosition.x - 1].image}`;
 
-        this.location.style.backgroundColor = this.movement[this.currPosition.y - 1][this.currPosition.x - 1].color;
+            this.location.style.backgroundColor = this.movement[this.currPosition.y - 1][this.currPosition.x - 1].color;
+
+            this.directionsToGo();
+
+            let itemsNearby = this.movement[this.currPosition.y - 1][this.currPosition.x - 1].items;
+            if(itemsNearby.length == 0){
+                this.sight.innerText = "nothing";
+            }
+            else{
+                itemsNearby.forEach(item=> {this.sight.innerText = this.items[item][0]});
+            }
+
+            if(this.held.length == 0){
+                this.carried.innerText = "nothing";
+            }
+            else{
+                this.carried.innerText = this.items[this.held[0]][0]
+            }
+
+            this.terminal.style.visibility = "visible";
+            this.query.innerText = "What now?";
+            this.input.focus();
+        }, 1500);
+    }
+    
+    //must be separated from setUp() for better performance...
+    directionsToGo(){
         this.directions.forEach(dir => {
             console.log(this.movement[this.currPosition.y - 1][this.currPosition.x - 1].moves);
             if(this.movement[this.currPosition.y - 1][this.currPosition.x - 1].moves.includes(`${dir.toUpperCase()}`)){
@@ -112,34 +163,31 @@ export class Location{
         if(this.direction.innerText.length > 12){
             this.direction.innerText = this.direction.innerText.slice(0, -2);
         }
-
-        let itemsNearby = this.movement[this.currPosition.y - 1][this.currPosition.x - 1].items;
-        if(itemsNearby.length == 0){
-            this.sight.innerText = "nothing";
-        }
-        else{
-            itemsNearby.forEach(item=> {this.sight.innerText = this.items[item][0]});
-        }
-
-        if(this.held.length == 0){
-            this.carried.innerText = "nothing";
-        }
-        else{
-            this.carried.innerText = this.items[this.held[0]][0]
-        }
     }
 
-    alert(){     
+    //wrong-way
+    alert(type){ 
         this.terminal.style.visibility = "hidden";
-        this.query.innerText = "You can't go that way";
+        switch(type){
+            case "wrong-way":
+                this.query.innerText = "You can't go that way";
+            break;
+            case "wrong-command":
+                this.query.innerText = "Try another word or V for vocabulary";
+            break;
+            case "no-items":
+                this.query.innerText = "There isn't anything like that here";
+            break;
+        }
         setTimeout(()=>{
+            this.directionsToGo()
             this.terminal.style.visibility = "visible";
             this.query.innerText = "What now?";
             this.input.focus();
         }, 1000);
     }
             
-
+    //vocabulary or gossips
     hint(json){
         console.log(json);
         json == "gossips" ? json = this.gossips : json = this.vocabulary;
@@ -157,21 +205,34 @@ export class Location{
                 }
             }, 400 * i);
         }
-        
         setTimeout(()=>{
             window.addEventListener("keypress", ()=>{
-                // window.removeAllListeners()
-                console.log(this.hints);
                 this.hints.innerText = "";
                 this.hints.style.display = "none";
                 this.downContainer.style.display = "block";
                 this.inputSpan.innerText = "";
                 this.input.value = "";
                 this.input.focus();
-                console.log("lol");
             }, { once: true });
-        }, 5000);
-    }         
+        }, 2500);
+    }
+    
+    take(item){
+        this.itemsHere = [];
+        if(this.movement[this.currPosition.y - 1][this.currPosition.x - 1].items.length > 0){
+            this.movement[this.currPosition.y - 1][this.currPosition.x - 1].items.forEach((num)=>{
+                this.itemsHere.push(num);
+            })
+            console.log(this.itemsHere);
+        }
+        else{
+            this.alert("no-items")
+        }
+        
+        
+    }
 }
     
+//foreach w foreach....
+//https://www.geeksforgeeks.org/how-to-get-the-first-key-name-of-a-javascript-object/
 

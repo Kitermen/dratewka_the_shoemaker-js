@@ -10,7 +10,7 @@
 .terminal-container{
     display: flex;
     flex-direction: row;
-    max-width: 600px;
+    max-width: 1000px;
 }
 
 .terminal-wrapper {

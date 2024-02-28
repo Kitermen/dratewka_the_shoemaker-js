@@ -16,7 +16,7 @@
 .terminal-wrapper {
     position: relative;
     box-sizing: border-box;
-    
+    height: 100px;
     padding: 4px 3px;
     display: inline-block;
     max-width: 100%;
@@ -34,6 +34,7 @@
     min-width: 2px;
     user-select: none;
     vertical-align: top;
+    padding-top: 5px;
 }
 
 .terminal-wrapper input {
@@ -48,6 +49,7 @@
     box-sizing: border-box;
     width: 100%;
     margin: 8px 0px 0px 4px;
+    padding-top: 8px;
   }
 
 .terminal {
@@ -57,7 +59,7 @@
     display: block;
     box-sizing: border-box;
     border-right: 20px solid white;
-    margin-top: -3px;
+    margin-top: -1.5px;
     color: transparent;
     caret-color: transparent;
 }

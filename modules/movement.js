@@ -104,6 +104,16 @@ export class Location{
                 }
             break;
 
+            case "D":
+            case "DROP":
+                if(para == undefined || para.length < 2){
+                    this.alert("wrong-command");
+                }
+                else{
+                    this.drop(para);
+                }
+            break;
+
             default:
                 this.alert("wrong-command");
         }
@@ -163,7 +173,7 @@ export class Location{
     }
 
     //wrong-way
-    alert(type){ 
+    alert(type, item){ 
         this.terminal.style.visibility = "hidden";
         switch(type){
             case "wrong-way":
@@ -174,6 +184,12 @@ export class Location{
             break;
             case "no-items":
                 this.query.innerText = "There isn't anything like that here";
+            break;
+            case "picking-item":
+                this.query.innerText = `You are taking ${item}`;
+            break;
+            case "hands-full":
+                this.query.innerText = `You are carrying something`;
             break;
         }
         //TODO -> JSON of key(err code), val(Try another word or V for vocabulary)
@@ -216,25 +232,50 @@ export class Location{
     }
     
     take(item){
-        this.itemsHere = [];
-        if(this.movement[this.currPosition.y - 1][this.currPosition.x - 1].items.length > 0){
-            this.movement[this.currPosition.y - 1][this.currPosition.x - 1].items.forEach(num=>{
-                this.itemsHere.push(num);
-            })
-            this.itemsHere.forEach(num=>{
-                if(this.items[num][2] == item){
-                    setTimeout(()=>{
-                        this.held.push(num);
-                        this.carried.innerText = this.items[num][2];
-                        this.movement[this.currPosition.y - 1][this.currPosition.x - 1].items = this.movement[this.currPosition.y - 1][this.currPosition.x - 1].items.filter(x=> x != num);
-                        console.log(this.movement[this.currPosition.y - 1][this.currPosition.x - 1].items);
-                        this.directionsToGo()
-                    }, 800)
+        if(this.held.length == 0){
+            this.itemsHere = [];
+            let found = false;
+            if(this.movement[this.currPosition.y - 1][this.currPosition.x - 1].items.length > 0){
+                this.movement[this.currPosition.y - 1][this.currPosition.x - 1].items.forEach(num=>{
+                    this.itemsHere.push(num);
+                })
+                this.itemsHere.forEach(num=>{
+                    if(this.items[num][2] == item){
+                        found = true;
+                        this.alert("picking-item", this.items[num][0]);
+                        setTimeout(()=>{
+                            this.held.push(num);
+                            this.carried.innerText = this.items[num][2];
+                            this.movement[this.currPosition.y - 1][this.currPosition.x - 1].items = this.movement[this.currPosition.y - 1][this.currPosition.x - 1].items.filter(x=> x != num);
+                            console.log(this.movement[this.currPosition.y - 1][this.currPosition.x - 1].items);
+                            this.directionsToGo();
+                        }, 800)
+                    }
+                })
+                if(!found){
+                    this.alert("no-items");
                 }
-            })
+            }
+            else{
+                this.alert("no-items");
+            }
         }
         else{
-            this.alert("no-items");
+            this.alert("hands-full")
+        }
+    }
+
+    drop(item){
+        if(this.movement[this.currPosition.y - 1][this.currPosition.x - 1].items.length < 3){
+            if(this.held.length > 0){
+                let dropPossibilities = [];
+                Object.entries(this.items).map(entry => {
+                    dropPossibilities.push(entry[1][2]);
+                })
+                if(dropPossibilities.includes(item)){
+                    
+                }
+            }
         }
     }
 }

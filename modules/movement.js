@@ -114,6 +114,16 @@ export class Location{
                 }
             break;
 
+            case "U":
+            case "USE":
+                if(para == undefined || para.length < 2){
+                    this.alert("wrong-command");
+                }
+                else{
+                    this.use(para);
+                }
+            break;
+
             default:
                 this.alert("wrong-command");
         }
@@ -134,13 +144,7 @@ export class Location{
 
             this.directionsToGo();
 
-            let itemsNearby = this.movement[this.currPosition.y - 1][this.currPosition.x - 1].items;
-            if(itemsNearby.length == 0){
-                this.sight.innerText = "nothing";
-            }
-            else{
-                itemsNearby.forEach(item=> {this.sight.innerText = this.items[item][0]});
-            }
+            this.itemsNearby()
 
             if(this.held.length == 0){
                 this.carried.innerText = "nothing";
@@ -159,7 +163,7 @@ export class Location{
     directionsToGo(){
         this.direction.innerHTML = "";
         this.directions.forEach(dir => {
-            console.log(this.movement[this.currPosition.y - 1][this.currPosition.x - 1].moves);
+            //console.log(this.movement[this.currPosition.y - 1][this.currPosition.x - 1].moves);
             if(this.movement[this.currPosition.y - 1][this.currPosition.x - 1].moves.includes(`${dir.toUpperCase()}`)){
                 document.getElementById(`${dir}`).style.display = "none";
                 this.direction.innerHTML += `${dir.toUpperCase()},&nbsp`;
@@ -170,6 +174,18 @@ export class Location{
         })
         console.log(this.direction.innerHTML);
         this.direction.innerText = this.direction.innerText.slice(0, -2);
+    }
+
+    itemsNearby(){
+        let itemsHere = this.movement[this.currPosition.y - 1][this.currPosition.x - 1].items;
+        if(itemsHere.length == 0){
+            this.sight.innerText = "nothing";
+        }
+        else{
+            this.sight.innerHTML = "";
+            itemsHere.forEach(item=> {this.sight.innerHTML += `${this.items[item][0]},&nbsp;`});
+            this.sight.innerText = this.sight.innerText.slice(0, -2);
+        }
     }
 
     //wrong-way
@@ -188,8 +204,20 @@ export class Location{
             case "picking-item":
                 this.query.innerText = `You are taking ${item}`;
             break;
+            case "dropping-item":
+                this.query.innerText = `You are about to drop ${item}`;
+            break;
             case "hands-full":
                 this.query.innerText = `You are carrying something`;
+            break;
+            case "hands-empty":
+                this.query.innerText = `You are not carrying anything`;
+            break;
+            case "location-full":
+                this.query.innerText = `You can't store any more here`;
+            break;
+            case "incorrect-item":
+                this.query.innerText = `You are not carrying it`;
             break;
         }
         //TODO -> JSON of key(err code), val(Try another word or V for vocabulary)
@@ -203,9 +231,7 @@ export class Location{
             
     //vocabulary or gossips
     hint(json){
-        console.log(json);
         json == "gossips" ? json = this.gossips : json = this.vocabulary;
-        console.log(json);
         this.downContainer.style.display = "none";
         this.hints.style.display = "block"
         for(let i = 0; i < json.length; i += 1){
@@ -231,6 +257,7 @@ export class Location{
         }, 2500)
     }
     
+    //taking the item from location
     take(item){
         if(this.held.length == 0){
             this.itemsHere = [];
@@ -246,9 +273,10 @@ export class Location{
                         setTimeout(()=>{
                             this.held.push(num);
                             this.carried.innerText = this.items[num][2];
+                            console.log(this.movement[this.currPosition.y - 1][this.currPosition.x - 1].items);
                             this.movement[this.currPosition.y - 1][this.currPosition.x - 1].items = this.movement[this.currPosition.y - 1][this.currPosition.x - 1].items.filter(x=> x != num);
                             console.log(this.movement[this.currPosition.y - 1][this.currPosition.x - 1].items);
-                            this.directionsToGo();
+                            this.itemsNearby()
                         }, 800)
                     }
                 })
@@ -261,21 +289,42 @@ export class Location{
             }
         }
         else{
-            this.alert("hands-full")
+            this.alert("hands-full");
         }
     }
 
+    //dropping the item
     drop(item){
         if(this.movement[this.currPosition.y - 1][this.currPosition.x - 1].items.length < 3){
-            if(this.held.length > 0){
-                let dropPossibilities = [];
+            if(this.held.length){
+                let havingItem = false;
                 Object.entries(this.items).map(entry => {
-                    dropPossibilities.push(entry[1][2]);
+                    if(item == entry[1][2]){
+                        havingItem = true;
+                        this.alert("dropping-item", entry[1][0]);
+                            setTimeout(()=>{
+                                this.held = [];
+                                this.movement[this.currPosition.y - 1][this.currPosition.x - 1].items.push(entry[0]);
+                                this.carried.innerText = "nothing";
+                                this.itemsNearby();
+                            }, 800)
+                    }
                 })
-                if(dropPossibilities.includes(item)){
-                    
+                if(!havingItem){
+                    this.alert("incorrect-item");
                 }
             }
+            else{
+                this.alert("hands-empty");
+            }
         }
+        else{
+            this.alert("location-full")
+        }
+    }
+
+    //using the item
+    use(item){
+
     }
 }

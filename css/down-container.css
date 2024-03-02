@@ -24,6 +24,7 @@
 .direction-container, .sight-container, .carried-container{
     display: flex;
     flex-direction: row;
+    width: 1000px;
 }
 
 .sight-container{

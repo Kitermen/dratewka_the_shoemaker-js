@@ -146,12 +146,7 @@ export class Location{
 
             this.itemsNearby()
 
-            if(this.held.length == 0){
-                this.carried.innerText = "nothing";
-            }
-            else{
-                this.carried.innerText = this.items[this.held[0]][0];
-            }
+            this.carriedItem()
 
             this.terminal.style.visibility = "visible";
             this.query.innerText = "What now?";
@@ -177,6 +172,7 @@ export class Location{
     }
 
     itemsNearby(){
+        this.sight.innerText = "";
         let itemsHere = this.movement[this.currPosition.y - 1][this.currPosition.x - 1].items;
         if(itemsHere.length == 0){
             this.sight.innerText = "nothing";
@@ -188,8 +184,17 @@ export class Location{
         }
     }
 
+    carriedItem(){
+        if(this.held.length == 0){
+            this.carried.innerText = "nothing";
+        }
+        else{
+            this.carried.innerText = this.items[this.held[0]][0];
+        }
+    }
+
     //wrong-way
-    alert(type, item){ 
+    alert(type, text){ 
         this.terminal.style.visibility = "hidden";
         switch(type){
             case "wrong-way":
@@ -202,10 +207,10 @@ export class Location{
                 this.query.innerText = "There isn't anything like that here";
             break;
             case "picking-item":
-                this.query.innerText = `You are taking ${item}`;
+                this.query.innerText = `You are taking ${text}`;
             break;
             case "dropping-item":
-                this.query.innerText = `You are about to drop ${item}`;
+                this.query.innerText = `You are about to drop ${text}`;
             break;
             case "hands-full":
                 this.query.innerText = `You are carrying something`;
@@ -218,6 +223,15 @@ export class Location{
             break;
             case "incorrect-item":
                 this.query.innerText = `You are not carrying it`;
+            break;
+            case "content-creator":
+                this.query.innerText = `${text}`;
+            break;
+            case "wrong-item-on-location":
+                this.query.innerText = "You aren't carrying anything like that";
+            break;
+            case "wrong-location-for-item":
+                this.query.innerText = "Nothing happened";
             break;
         }
         //TODO -> JSON of key(err code), val(Try another word or V for vocabulary)
@@ -319,12 +333,40 @@ export class Location{
             }
         }
         else{
-            this.alert("location-full")
+            this.alert("location-full");
         }
     }
 
     //using the item
     use(item){
-
+        let correctLocation = false;
+        let correctItem = false;
+        this.locations.forEach(option=>{
+            if(option.location == `${this.currPosition.y}${this.currPosition.x}`){
+                console.log("zeobilo sie dobrze");
+                if(option.item1 == this.held[0] && item == this.items[this.held[0]][2] && this.held.length == 1){
+                    this.alert("content-creator", `${option.text}`)
+                    setTimeout(()=>{
+                        this.held = [];
+                        if(option.location == "43"){
+                            this.movement[this.currPosition.y - 1][this.currPosition.x - 1].items.push(option.item2);
+                        }
+                        else{
+                            this.held.push(option.item2)
+                        }
+                        this.itemsNearby()
+                        this.carriedItem()
+                    }, 800)
+                }
+                else{
+                    this.alert("wrong-item-on-location")
+                }
+            }
+            else{
+                this.alert("wrong-location-for-item")
+            }
+        })
     }
+       
+    
 }

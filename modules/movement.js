@@ -42,7 +42,7 @@ export class Location{
             return;
         }
         let input = e.target.value;
-        input.split(" ").length > 2 ? this.alert("wrong-command") : console.log("git command");
+        input.split(" ").length > 2 ? this.alert("wrong-command") : console.log("");
         let command = input.split(" ")[0];
         let para = input.split(" ")[1];
         switch(command){
@@ -154,7 +154,7 @@ export class Location{
             this.itemsNearby()
 
             this.carriedItem()
-            console.log("no praie xdddddddddddddddd", this.currPosition);
+
             this.terminal.style.visibility = "visible";
             this.query.innerText = "What now?";
             this.input.focus();
@@ -181,11 +181,16 @@ export class Location{
     itemsNearby(){
         this.sight.innerText = "";
         let itemsHere = this.movement[this.currPosition.y - 1][this.currPosition.x - 1].items;
-        if(itemsHere.length == 0){
+        let sheepItemsHere = this.movement[this.currPosition.y - 1][this.currPosition.x - 1].sheepItems;
+        if((itemsHere.length == 0 && `${this.currPosition.y}${this.currPosition.x}` != "43") || (`${this.currPosition.y}${this.currPosition.x}` == "43" && itemsHere.length == 0 && sheepItemsHere.length == 0)){
             this.sight.innerText = "nothing";
         }
         else{
             this.sight.innerHTML = "";
+            console.log(`${this.currPosition.y}${this.currPosition.x}`);
+            if(`${this.currPosition.y}${this.currPosition.x}` == "43"){
+                this.movement[this.currPosition.y - 1][this.currPosition.x - 1].sheepItems.forEach(item=> {this.sight.innerHTML += `${this.items[item][0]},&nbsp;`});
+            }
             itemsHere.forEach(item=> {this.sight.innerHTML += `${this.items[item][0]},&nbsp;`});
             this.sight.innerText = this.sight.innerText.slice(0, -2);
         }
@@ -200,7 +205,7 @@ export class Location{
         }
     }
 
-    //wrong-way
+    //game-alerts
     alert(type, text){ 
         this.terminal.style.visibility = "hidden";
         switch(type){
@@ -301,7 +306,7 @@ export class Location{
                             this.held.push(num);
                             this.carried.innerText = this.items[num][2];
                             console.log(this.movement[this.currPosition.y - 1][this.currPosition.x - 1].items);
-                            this.movement[this.currPosition.y - 1][this.currPosition.x - 1].items = this.movement[this.currPosition.y - 1][this.currPosition.x - 1].items.filter(x=> x != num);
+                            this.movement[this.currPosition.y - 1][this.currPosition.x - 1].items = this.movement[this.currPosition.y - 1][this.currPosition.x - 1].items.filter(x => x != num);
                             console.log(this.movement[this.currPosition.y - 1][this.currPosition.x - 1].items);
                             this.itemsNearby()
                         }, 800)
@@ -322,6 +327,8 @@ export class Location{
 
     //dropping the item
     drop(item){
+        let countItems = this.movement[this.currPosition.y - 1][this.currPosition.x - 1].items.filter(x => x != 13 && x != 17 && x != 20 && x != 23 && x != 26 && x != 29 && x != 30 && x != 34);
+        console.log(countItems);
         if(this.movement[this.currPosition.y - 1][this.currPosition.x - 1].items.length < 3){
             if(this.held.length){
                 let havingItem = false;
@@ -353,29 +360,28 @@ export class Location{
     //using the item
     use(item){
         const dependence = this.locations.find(one => one.location == `${this.currPosition.y}${this.currPosition.x}`)
-        //dependence - object with location (locations.json) player stays at the moment
-        if(this.held.length == 1){
-            if(item == this.items[this.held[0]][2]){
-                if(dependence){
-                    this.alert("content-creator", `${dependence.text}`);
-                    setTimeout(()=>{
+        console.log(dependence);
+        //dependence - object with location (locations.json) player stays at the moment, aka "can I craft smth on this location"
+        if(this.held.length == 1 && item == this.items[this.held[0]][2]){
+            if(dependence){
+                this.alert("content-creator", `${dependence.text}`);
+                setTimeout(()=>{
+                    if(dependence.location == "43"){
+                        let dependence2 = this.locations.find(one => one.location == `${this.currPosition.y}${this.currPosition.x}` && one.item1 == this.held[0])
+                        console.log("DEPENDENCE2", dependence2);
+                        this.movement[this.currPosition.y - 1][this.currPosition.x - 1].sheepItems.push(dependence2.item2);
                         this.held = [];
-                        if(dependence.location == "43"){
-                            this.movement[this.currPosition.y - 1][this.currPosition.x - 1].items.push(dependence.item2);
-                        }
-                        else{
-                            this.held.push(dependence.item2);
-                        }
-                        this.itemsNearby();
-                        this.carriedItem();
-                    }, 800)
-                }
-                else{
-                    this.alert("wrong-location-for-item");
-                }
+                    }
+                    else{
+                        this.held = [];
+                        this.held.push(dependence.item2);
+                    }
+                    this.itemsNearby();
+                    this.carriedItem();
+                }, 800)
             }
             else{
-                this.alert("wrong-item-on-location");
+                this.alert("wrong-location-for-item");
             }
         }
         else{
@@ -383,44 +389,3 @@ export class Location{
         }                       
     }
 }
-
-
-
-// use(item){
-//     let correctLocation = false;
-//     let correctItem = false;
-//     let fullHands = false;
-//     this.locations.forEach(option=>{
-//         if(option.location == `${this.currPosition.y}${this.currPosition.x}`){
-//             correctLocation = true;
-//             if(this.held.length == 1){
-//                 fullHands = true;
-//                 if(option.item1 == this.held[0]){
-//                     correctItem = true;
-//                     if(item == this.items[option.item1][2]){
-//                         correctItem = false;
-//                         this.alert("content-creator", `${option.text}`);
-//                         setTimeout(()=>{
-//                             this.held = [];
-//                             if(option.location == "43"){
-//                                 this.movement[this.currPosition.y - 1][this.currPosition.x - 1].items.push(option.item2);
-//                             }
-//                             else{
-//                                 this.held.push(option.item2);
-//                             }
-//                             this.itemsNearby();
-//                             this.carriedItem();
-//                         }, 800)
-//                     }
-//                 }
-//             }
-//         }
-//     })
-//     if(correctLocation && !correctItem){
-//         this.alert("wrong-location-for-item");
-//     }
-//     else if(!correctLocation && !correctItem){
-//         console.log("weszlo doladnie tu, you arent carr");
-//         this.alert("wrong-item-on-location");
-//     }
-// }

@@ -29,8 +29,26 @@
 
 .sight-container{
     margin: 20px 0px 20px 0px;
+    width: 1000px;
+    overflow: auto;
+}
+
+.sight-container p{
+    min-width: 176px;
+    max-height: 20px;
+    white-space: nowrap;
+}
+
+.sight-container .sight{
+    width: 100%;
+    height: fit-content;
+    text-wrap: wrap;
+    white-space: wrap;
+    line-height: 25px;
+    
 }
 
 .carried-container{
     margin: 0px 0px 40px 0px;
+    height: fit-content;
 }

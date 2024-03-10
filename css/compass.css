@@ -18,13 +18,13 @@
 }
 
 .NORTH{
-    top: 80px;
+    top: 83px;
     left: 640px;
     /* display: none; */
 }
 
 .EAST{
-    top: 128px;
+    top: 130px;
     left: 812px;
     /* display: none; */
 }
@@ -36,7 +36,7 @@
 }
 
 .WEST{
-    top: 128px;
+    top: 130px;
     left: 488px;
     /* display: none; */
 }

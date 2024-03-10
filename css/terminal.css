@@ -50,7 +50,7 @@
     width: 100%;
     margin: 8px 0px 0px 4px;
     padding-top: 8px;
-  }
+}
 
 .terminal {
     max-width: 500px;
@@ -74,5 +74,10 @@ input{
     background: none;
     outline: none;
     color: inherit;
+}
+
+.simple-query{
+    height: fit-content;
+    white-space: wrap;
 }
 
